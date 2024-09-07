@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fireproof Test</title>
-    <script src="./fireproof.iife.js"></script>
+    <script src="./index.global.js"></script>
     <script src="./connect-netlify.iife.js"></script>
     <script type="text/javascript">
       function todoApp() {
@@ -14,7 +14,7 @@
 
         let dbName
         let db
-        let cx
+        // let cx
 
         let dbUnsubscribe = false
 
@@ -29,29 +29,29 @@
             name = newDb.name
             dbName = newDb.name
             db = newDb
-            cx = newConn
+            // cx = newConn
             const input = document.querySelector('#list')
             input.value = dbName
           } else {
             dbName = name
             db = fireproof(name)
-            cx = connect.netlify(db)
-            cx.ready.then(async () => {
-              const span = document.querySelector('#cxInfo')
-              span.innerText = `📡 ${cx.name}`
-            })
+            // cx = connect.netlify(db)
+            // cx.ready.then(async () => {
+            //   const span = document.querySelector('#cxInfo')
+            //   span.innerText = `📡 ${cx.name}`
+            // })
           }
 
           window.db = db
-          window.cx = cx
+          // window.cx = cx
 
           db.changes([], { limit: 1 }).then(changes => {
             if (changes.clock.length > 0) {
               input.disabled = false
             } else {
-              cx.ready.then(async () => {
+              // cx.ready.then(async () => {
                 input.disabled = false
-              })
+              // })
             }
           })
 
@@ -73,7 +73,7 @@
         function drawInfo() {
           document.querySelector(
             '#carLog'
-          ).innerText = ` ⏰ ${db._crdt.clock.head.length} ${compactor} ${cx.loader.carLog.length}`
+          ).innerText = ` ⏰ ${db._crdt.clock.head.length} ${compactor}`
         }
         const doRedraw = async () => {
           drawInfo()
@@ -155,7 +155,7 @@
           const button = document.querySelector('#polling')
           button.innerText = '🔄'
           poller = setInterval(async () => {
-            await cx.refresh()
+            // await cx.refresh()
           }, 3000)
         }
         const stopPoller = () => {
